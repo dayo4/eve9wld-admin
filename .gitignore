@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+public/defaults/
+public/img/
 
 # local env files
 .env.local

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="GBLMContainer">
         <TopNav />
         <HoverPanel />
         <Notify />
@@ -54,4 +54,24 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+#GBLMContainer {
+    position: relative;
+    margin-top: 52px;
+    padding-bottom: 165px; /* Bottom-nav height + Footer height + 0px*/
+    height: 100%;
+    width: 100%;
+}
+
+@include lg-and-up {
+    #GBLMContainer {
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+}
+
+@include sm-and-down {
+    #GBLMContainer {
+        margin-top: 49px;
+    }
+}
 </style>

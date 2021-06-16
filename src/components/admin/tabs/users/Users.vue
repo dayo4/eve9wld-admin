@@ -1,5 +1,5 @@
 <template>
-    <div v-show="activeTab === 'Tab-1'" class="Tab xs12">
+    <div v-show="activeTab === 'Tab_1'" class="Tab xs12">
         <h2 class="text-center t-blue-grey--1">Manage Users</h2>
 
         <transition name="slide-fade">

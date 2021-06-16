@@ -54,7 +54,7 @@ export default defineComponent({
     },
 
     mounted () {
-        this.allowReg = this.settings.allow_new_reg
+        // this.allowReg = this.settings.allow_new_reg
     }
 })
 

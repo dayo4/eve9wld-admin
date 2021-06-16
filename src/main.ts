@@ -1,4 +1,5 @@
 import '@/globalStyles/deploy'
+import '../../../GreyCore/GC/dist/greycore.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import { $General } from './plugins'

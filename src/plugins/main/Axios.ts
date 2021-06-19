@@ -18,7 +18,7 @@ const devMode = process.env.NODE_ENV === 'development'
 const config = {
   // baseURL: (devMode ? 'https://orb.heroestoggery.com/wp-json/' : process.env.BASE_URL),
   // baseURL: (devMode ? 'http://localhost/wplocal/wp-json/' : process.env.BASE_URL),
-  baseURL: (devMode ? 'http://127.0.0.1:3000/' : process.env.BASE_URL) + 'scv-v1/',
+  baseURL: (devMode ? 'http://127.0.0.1:3000/' : process.env.BASE_URL) + 'scv-v1/admEP/',
   timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 }

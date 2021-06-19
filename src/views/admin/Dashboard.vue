@@ -37,6 +37,7 @@ export default defineComponent({
             tabsList: [
                 { id: 1, name: "Manage Users", icon: "icon-users-1" },
                 { id: 2, name: "System Settings", icon: "icon-cog-1" },
+                { id: 3, name: "Products", icon: "icon-check-1" },
                 // { id: 3, name: "Manage Posts", icon: "icon-doc-text" },
                 // { id: 4, name: "Notifications", icon: "icon-bell" }
             ],

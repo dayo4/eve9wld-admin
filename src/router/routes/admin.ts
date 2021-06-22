@@ -1,5 +1,5 @@
 import Index from '@/views/admin/Index.vue'
-import Dashboard from "@/views/admin/Dashboard.vue"
+import DashboardContainer from "@/views/admin/Container.vue"
 
 const routes = [
   {
@@ -10,7 +10,7 @@ const routes = [
       {
         path: "",
         name: "dashboard",
-        component: Dashboard,
+        component: DashboardContainer,
       },
     ]
   }

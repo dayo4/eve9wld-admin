@@ -1,12 +1,12 @@
 /* Import other modules */
-// import { Images } from './modules/Images'
+import { NewProduct } from './modules/New'
 
 import { $Axios, $Notify, $Process } from '@/plugins'
 import { reactive } from 'vue'
 
 
 class Products {
-
+    $new = new NewProduct()
     data: any = null
 
     async fetch (payload: { id: string }) {

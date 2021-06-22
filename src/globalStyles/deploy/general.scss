@@ -10,14 +10,23 @@ div[contenteditable="true"]:empty::before {
 }
 
 div[contenteditable="true"] {
+max-height: 250px;
+overflow-y: scroll !important;
+}
+div[contenteditable="true"].shorter {
     max-height: 100px;
-    overflow-y: scroll !important;
 }
 
 div[contenteditable="true"], input {
     outline: none;
 }
 
+div[contenteditable="true"],
+input {
+    border: solid 2px rgba(128, 128, 128, 0.591);
+    border-radius: 4px;
+    padding: 7px;
+}
 .doNotScroll {
     overflow: hidden !important;
 }
@@ -38,6 +47,7 @@ div[contenteditable="true"], input {
 }
 
 body {
+	color: $blue-grey--1;
     margin: 0;
     overflow-x: hidden;
     -ms-overflow-style: none;

@@ -15,7 +15,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { $Auth, $Profile, $Admin } from '@/store'
+// import { $Auth, $Profile, $Admin } from '@/store'
 import MultiNav from "@/components/navs/reusables/morphors.js"
 
 // import HorizontalNavigator from '@/components/navs/reusables/navigators/HorizontalNavigator.vue'
@@ -30,12 +30,6 @@ export default defineComponent({
     data () {
         return {
             subActiveTab: "Tab_1",
-            tabsList: [
-                { id: 1, name: "Users", icon: "icon-users-1" },
-                { id: 2, name: "Settings", icon: "icon-cog-1" },
-                { id: 3, name: "Privilege", icon: "icon-angle-double-up" },
-                { id: 4, name: "Reports", icon: "icon-thumbs-down-alt" }
-            ],
 
             NavConfig: {
                 getActiveTab: (activeTab) => {

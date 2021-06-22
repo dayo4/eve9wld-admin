@@ -63,15 +63,15 @@ export default defineComponent({
 }
 
 @include lg-and-up {
-    #GBLMContainer {
-        padding-left: 15%;
-        padding-right: 15%;
-    }
+    // #GBLMContainer {
+    //     padding-left: 15%;
+    //     padding-right: 15%;
+    // }
 }
 
 @include sm-and-down {
     #GBLMContainer {
-        margin-top: 49px;
+        margin-top: 50px;
     }
 }
 </style>

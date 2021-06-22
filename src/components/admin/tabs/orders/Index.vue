@@ -16,9 +16,8 @@ import { defineComponent } from 'vue'
 // import { $Confirm } from '@/plugins'
 
 import MultiNav from "@/components/navs/reusables/morphors.js"
-
 import Tab_1 from "./List.vue"
-import Tab_2 from "./Create.vue"
+import Tab_2 from "./View.vue"
 
 export default defineComponent({
 	components: {

@@ -9,11 +9,12 @@
 // import { $Auth, $Posts } from '@/store'
 // import { $Process, $Notify, $Obstacl, $Validator } from '@/plugins'
 
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue"
 // import CustomCkDocumentEditor from '@ckeditor/ckeditor5-build-decoupled-document'
-import CustomCkDocumentEditor from '@/plugins/utils/ckeditor'
 
-import { $Axios } from '@/plugins'
+import CustomCkDocumentEditor from "@/plugins/utils/ckeditor"
+
+import { $Axios } from "@/plugins"
 import { $Auth } from "@/store"
 
 export default defineComponent({
@@ -22,14 +23,18 @@ export default defineComponent({
     props: {
         initialContent: { required: false, type: String },
         config: { required: false, type: Array },
-        enableImage: { required: false, default: false, type: Boolean },
+        // enableImage: { required: false, default: false, type: Boolean },
     },
-    data () {
+    data() {
         return {
             editor: null,
             editorConfig: {
-                plugins: [ /* resizeImage *//* ImageInsert */, /* AutoImage */ ],
-            }
+                plugins: [
+                    ,/* resizeImage */
+                /* ImageInsert */
+                /* AutoImage */
+                ],
+            },
         }
     },
     // watch: {
@@ -37,186 +42,183 @@ export default defineComponent({
     //         this.$emit('content-updated', val)
     //     }
     // },
-    computed: {
-
-    },
-    methods: {
-
-    },
-    mounted () {
-
+    computed: {},
+    methods: {},
+    mounted() {
         // this.content = this.initialContent
         // const editor: HTMLElement = document.getElementsByClassName('ql-editor')[ 0 ] as any
         // editor.addEventListener('paste', $General.pasteAsPlainText, false)
         let _this = this
-        // let CkDocumentEditor
+        let CkDocumentEditor
 
         class MyUploadAdapter {
             loader
 
-            constructor (loader) {
+            constructor(loader) {
                 this.loader = loader
             }
 
-            upload () {
+            upload() {
                 return this.loader.file.then(async (file) => {
                     console.log(this.loader)
                     const formData = new FormData()
-                    formData.append('contentImages', file)
+                    formData.append("contentImages", file)
 
-                    try
-                    {
-
-                        const { data } = await $Axios.patch('posts/uploadImages/' + 4 + '/' + $Auth.user.id, formData, {
-                            onUploadProgress: (progressEvent) => {
-                                // setInterval(() => {
-                                //     let uploaded = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                                console.log(`${progressEvent.loaded}/${progressEvent.total}`)
-                                // }, 20)
+                    try {
+                        const { data } = await $Axios.patch(
+                            "posts/uploadImages/" + 4 + "/" + $Auth.user.id,
+                            formData,
+                            {
+                                onUploadProgress: (progressEvent) => {
+                                    // setInterval(() => {
+                                    //     let uploaded = Math.round((progressEvent.loaded / progressEvent.total) * 100)
+                                    console.log(`${progressEvent.loaded}/${progressEvent.total}`)
+                                    // }, 20)
+                                },
                             }
-                        })
+                        )
                         console.log(data)
                         return { default: _this.$postBaseUrl + data.imageUrl }
-                    }
-                    catch (e)
-                    {
-                        console.log('errr', e)
+                    } catch (e) {
+                        console.log("errr", e)
                     }
                 })
-
             }
-            abort () {
-                console.log('abooooooort')
+            abort() {
+                console.log("abooooooort")
             }
         }
 
-        // if (!CkDocumentEditor)
-        // {
-        //     CkDocumentEditor = CustomCkDocumentEditor.create(document.querySelector('#decoupled-ck-editor'), {
+        if (!CkDocumentEditor) {
+            CkDocumentEditor = CustomCkDocumentEditor.create(
+                document.querySelector("#decoupled-ck-editor"),
+                {
+                    toolbar: {
+                        items: [
+                            "heading",
+                            "|",
+                            "fontSize",
+                            "fontFamily",
+                            "|",
+                            "fontColor",
+                            "fontBackgroundColor",
+                            "|",
+                            "bold",
+                            "italic",
+                            "underline",
+                            "strikethrough",
+                            "|",
+                            "alignment",
+                            "|",
+                            "numberedList",
+                            "bulletedList",
+                            "|",
+                            "outdent",
+                            "indent",
+                            "|",
+                            "todoList",
+                            "link",
+                            "blockQuote",
+                            "imageInsert",
+                            "insertTable",
+                            "mediaEmbed",
+                            "|",
+                            "undo",
+                            "redo",
+                            "code",
+                            "codeBlock",
+                            "subscript",
+                            "superscript",
+                            "horizontalLine",
+                        ],
+                    },
+                    language: "en",
+                    image: {
+                        // resizeOptions: [
+                        //     {
+                        //         name: "resizeImage:original",
+                        //         label: "Original",
+                        //         value: null,
+                        //     },
+                        //     {
+                        //         name: "resizeImage:100%",
+                        //         label: "100%",
+                        //         value: 100,
+                        //     },
+                        //     {
+                        //         name: "resizeImage:90%",
+                        //         label: "90%",
+                        //         value: 90,
+                        //     },
+                        //     {
+                        //         name: "resizeImage:75",
+                        //         label: "75%",
+                        //         value: 75,
+                        //     },
+                        //     {
+                        //         name: "resizeImage:50",
+                        //         label: "50%",
+                        //         value: 50,
+                        //     },
+                        //     {
+                        //         name: "resizeImage:25%",
+                        //         label: "25%",
+                        //         value: 25,
+                        //     },
+                        // ],
 
-        //         toolbar: {
-        //             items: [
-        //                 'heading',
-        //                 '|',
-        //                 'fontSize',
-        //                 'fontFamily',
-        //                 '|',
-        //                 'fontColor',
-        //                 'fontBackgroundColor',
-        //                 '|',
-        //                 'bold',
-        //                 'italic',
-        //                 'underline',
-        //                 'strikethrough',
-        //                 '|',
-        //                 'alignment',
-        //                 '|',
-        //                 'numberedList',
-        //                 'bulletedList',
-        //                 '|',
-        //                 'outdent',
-        //                 'indent',
-        //                 '|',
-        //                 'todoList',
-        //                 'link',
-        //                 'blockQuote',
-        //                 'imageInsert',
-        //                 'insertTable',
-        //                 'mediaEmbed',
-        //                 '|',
-        //                 'undo',
-        //                 'redo',
-        //                 'code',
-        //                 'codeBlock',
-        //                 'subscript',
-        //                 'superscript',
-        //                 'horizontalLine'
-        //             ]
-        //         },
-        //         language: 'en',
-        //         image: {
-        //             // resizeOptions: [
-        //             // {
-        //             //     name: 'resizeImage:original',
-        //             //     label: 'Original',
-        //             //     value: null
-        //             // },
-        //             // {
-        //             //     name: 'resizeImage:100%',
-        //             //     label: '100%',
-        //             //     value: 100
-        //             // },
-        //             // {
-        //             //     name: 'resizeImage:90%',
-        //             //     label: '90%',
-        //             //     value: 90
-        //             // },
-        //             // {
-        //             //     name: 'resizeImage:75',
-        //             //     label: '75%',
-        //             //     value: 75
-        //             // },
-        //             // {
-        //             //     name: 'resizeImage:50',
-        //             //     label: '50%',
-        //             //     value: 50
-        //             // },
-        //             // {
-        //             //     name: 'resizeImage:25%',
-        //             //     label: '25%',
-        //             //     value: 25
-        //             // },
+                        toolbar: [
+                            "imageTextAlternative",
+                            "imageStyle:full",
+                            "imageStyle:side",
+                            "linkImage",
+                            "|",
+                            "resizeImage:original",
+                            "resizeImage:75",
+                            "resizeImage:50",
+                        ],
+                    },
+                    table: {
+                        contentToolbar: [
+                            "tableColumn",
+                            "tableRow",
+                            "mergeTableCells",
+                            "tableCellProperties",
+                            "tableProperties",
+                        ],
+                    },
+                    licenseKey: "",
+                }
+            )
+                .then((editor) => {
+                    _this.editor = editor
+                    editor.model.document.on("change:data", () => {
+                        _this.$emit("contentUpdated", editor.getData())
+                    })
 
-        //             // ],
+                    if (_this.initialContent) {
+                        editor.setData(_this.initialContent)
+                        _this.$emit("contentUpdated", editor.getData())
+                    }
 
-        //             toolbar: [
-        //                 'imageTextAlternative',
-        //                 'imageStyle:full',
-        //                 'imageStyle:side',
-        //                 'linkImage',
-        //                 '|', 'resizeImage:original', 'resizeImage:75', 'resizeImage:50'
-        //             ]
-        //         },
-        //         table: {
-        //             contentToolbar: [
-        //                 'tableColumn',
-        //                 'tableRow',
-        //                 'mergeTableCells',
-        //                 'tableCellProperties',
-        //                 'tableProperties'
-        //             ]
-        //         },
-        //         licenseKey: '',
+                    const toolbarContainer = document.querySelector("#toolbar-container")
+                    toolbarContainer.appendChild(editor.ui.view.toolbar.element)
 
-
-        //     })
-        //         .then(editor => {
-
-        //             _this.editor = editor
-        //             editor.model.document.on('change:data', () => {
-        //                 _this.$emit('contentUpdated', editor.getData())
-        //             })
-
-        //             if (_this.initialContent)
-        //             {
-        //                 editor.setData(_this.initialContent)
-        //                 _this.$emit('contentUpdated', editor.getData())
-        //             }
-
-        //             const toolbarContainer = document.querySelector('#toolbar-container')
-        //             toolbarContainer.appendChild(editor.ui.view.toolbar.element)
-
-        //             editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {
-        //                 return new MyUploadAdapter(loader)
-        //             }
-
-        //         })
-        //         .catch(e => {
-        //             console.log('editor error', e)
-        //         })
-        // }
-
-    }
+                    editor.plugins.get("FileRepository").createUploadAdapter = function(loader) {
+                        return new MyUploadAdapter(loader)
+                    }
+                })
+                .catch((e) => {
+                    console.log("editor error", e)
+                })
+        }
+    },
 })
-
 </script>
+<style lang="scss" scoped>
+#decoupled-ck-editor {
+    min-height: 300px;
+    border: solid 2px $grey-2;
+    border-radius: 5px;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="Post_Title_Container px-5 pt-5 mb-0">
+        <!-- <div class="Post_Title_Container px-5 pt-5 mb-0">
             <div class="t-white bold-4 font-6">TITLE :</div>
             <div
                 ref="titleInput"
@@ -28,7 +28,7 @@
                 contenteditable="true"
                 placeholder="Enter Post Permalink"
             ></div>
-        </div>
+        </div> -->
 
         <!-- editor -->
         <TextEditor
@@ -40,15 +40,16 @@
     </div>
 </template>
 <script lang="ts">
-import { $Auth, $Posts } from '@/store'
-import { $Process, $Notify, $Obstacl, $Validator, $General } from '@/plugins'
+import { $Auth, $Posts } from "@/store"
+import { $Process, $Notify, $Obstacl, $Validator, $General } from "@/plugins"
 
-import {defineComponent, defineAsyncComponent} from "vue"
+import { defineComponent, defineAsyncComponent } from "vue"
 
 export default defineComponent({
     components: {
         TextEditor: defineAsyncComponent(() =>
-						import(/* webpackChunkName: "txd" */'@/components/Editor/TextEditor.vue'))
+            import(/* webpackChunkName: "txd" */ "@/components/Editor/TextEditor.vue")
+        ),
     },
     // beforeRouteEnter(to, from, next) {
     // 	next(vm => {
@@ -58,13 +59,13 @@ export default defineComponent({
     // 	})
     // },
 
-    data () {
+    data() {
         return {
             // initialContent: string = this.contentToEdit.content || '' /* Only useful when editing existing post */
-            title: '',
-            slug: '',
-            content: '',
-            errors: null as any /* object */
+            title: "",
+            slug: "",
+            content: "",
+            errors: null as any /* object */,
             // mode: 'compose'
         }
     },
@@ -78,133 +79,134 @@ export default defineComponent({
     },
 
     methods: {
-        setTitle (e: any) {
+        setTitle(e: any) {
             this.title = e.target.textContent
-            if (this.errors)
-            {
-                this.errors[ 'Title' ] = ''
+            if (this.errors) {
+                this.errors["Title"] = ""
             }
         },
 
-        setSlug (e: any) {
+        setSlug(e: any) {
             this.slug = e.target.textContent
-            if (this.errors)
-            {
-                this.errors[ 'Slug' ] = ''
+            if (this.errors) {
+                this.errors["Slug"] = ""
             }
         },
 
-        setContent (content: string) {
+        setContent(content: string) {
             this.content = content
         },
 
-        showError (fieldName: string) {
-            if (this.errors)
-            {
-                return this.errors[ 'Title' ]
+        showError(fieldName: string) {
+            if (this.errors) {
+                return this.errors["Title"]
             }
         },
 
-        validate () {
+        validate() {
             const schema = [
                 {
-                    fieldName: 'Title',
+                    fieldName: "Title",
                     data: $Validator.sanitize(this.title),
                     rules: {
                         required: true,
                         min: 10,
-                        max: 100
+                        max: 100,
                     },
                 },
                 {
-                    fieldName: 'Slug',
+                    fieldName: "Slug",
                     data: $Validator.sanitize(this.slug),
                     rules: {
                         required: true,
                         min: 5,
-                        max: 100
+                        max: 100,
                     },
                 },
                 {
-                    fieldName: 'Content',
+                    fieldName: "Content",
                     data: this.content,
                     rules: {
                         required: true,
                     },
-                }
+                },
             ]
             return $Validator.validate(schema)
         },
 
-        init () {
-            if (this.validate())
-            {
-                $Obstacl.create('#saveBtn', {
+        init() {
+            if (this.validate()) {
+                $Obstacl.create("#saveBtn", {
                     action: this.saveContent,
                     // action: this.captureContentImages,
                 })
-
             }
             this.errors = $Validator.getErrors()
 
             $Process.abort()
 
-            if (this.errors[ 'Content' ])
-            {
-                $Notify.error(this.errors[ 'Content' ])
+            if (this.errors["Content"]) {
+                $Notify.error(this.errors["Content"])
             }
-            if (this.errors[ 'Slug' ])
-            {
-                $Notify.error(this.errors[ 'Slug' ])
+            if (this.errors["Slug"]) {
+                $Notify.error(this.errors["Slug"])
             }
         },
 
-        saveContent (contentImages?: any) {
+        saveContent(contentImages?: any) {
             // console.log(contentImages)
 
-            if (this.currentMode != 'edit-post')
-            {
-                $Posts.$compose.newPost({
-                    title: this.title,
-                    slug: this.slug.replace(/\s{2,}/g, ' ').split(' ').join('-').toLowerCase(),
-                    content: this.content,
-                    contentImages
-                }).then(() => {
-                    $Obstacl.destroy('#saveBtn')
-                })
-            } else
-            {
-                $Posts.$compose.update({
-                    title: this.title,
-                    slug: this.slug.replace(/\s{2,}/g, ' ').split(' ').join('-').toLowerCase(),
-                    content: this.content,
-                    contentImages
-                }).then(() => {
-                    $Obstacl.destroy('#saveBtn')
-                })
+            if (this.currentMode != "edit-post") {
+                $Posts.$compose
+                    .newPost({
+                        title: this.title,
+                        slug: this.slug
+                            .replace(/\s{2,}/g, " ")
+                            .split(" ")
+                            .join("-")
+                            .toLowerCase(),
+                        content: this.content,
+                        contentImages,
+                    })
+                    .then(() => {
+                        $Obstacl.destroy("#saveBtn")
+                    })
+            } else {
+                $Posts.$compose
+                    .update({
+                        title: this.title,
+                        slug: this.slug
+                            .replace(/\s{2,}/g, " ")
+                            .split(" ")
+                            .join("-")
+                            .toLowerCase(),
+                        content: this.content,
+                        contentImages,
+                    })
+                    .then(() => {
+                        $Obstacl.destroy("#saveBtn")
+                    })
             }
-
         },
-        plainText (e: ClipboardEvent) {
+        plainText(e: ClipboardEvent) {
             $General.pasteAsPlainText(e)
-        }
+        },
     },
 
-    mounted () {
-        if (this.contentToEdit)
-        {
-            this.title = (this.$refs.titleInput as HTMLDivElement).textContent = this.contentToEdit.title
-            this.slug = (this.$refs.slugInput as HTMLDivElement).textContent = this.contentToEdit.slug
+    mounted() {
+        if (this.contentToEdit) {
+            this.title = (this.$refs
+                .titleInput as HTMLDivElement).textContent = this.contentToEdit.title
+            this.slug = (this.$refs
+                .slugInput as HTMLDivElement).textContent = this.contentToEdit.slug
         }
-
-    }
+    },
 })
 
-    // $refs!: {
-    //     titleInput: any
-    //     slugInput: any
-    // }
-
+// $refs!: {
+//     titleInput: any
+//     slugInput: any
+// }
 </script>
 <style lang="scss">
 .Post_Title_Container {

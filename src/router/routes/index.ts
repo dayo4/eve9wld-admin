@@ -11,7 +11,7 @@ import admin from "./admin"
 // import gallery from "./gallery"
 // import shopping from "./shopping"
 
-const NotFound = "@/views/pages/ERRORS/404.vue"
+// import NotFound from "@/views/pages/ERRORS/404.vue"
 
 export default [
     ...admin,
@@ -22,7 +22,7 @@ export default [
     // ...settings,
     // ...gallery,
     // ...shopping,
-    { path: '/:pathMatch(.*)*', component: NotFound }
+    // { path: '/:pathMatch(.*)*', component: NotFound }
 ] as any
 
 // export function extendRoutes(routes, resolve) {

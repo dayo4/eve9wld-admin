@@ -18,7 +18,7 @@ const devMode = process.env.NODE_ENV === 'development'
 const config = {
   // baseURL: (devMode ? 'https://orb.heroestoggery.com/wp-json/' : process.env.BASE_URL),
   // baseURL: (devMode ? 'http://localhost/wplocal/wp-json/' : process.env.BASE_URL),
-  baseURL: (devMode ? 'http://127.0.0.1:3000/' : process.env.BASE_URL) + 'scv-v1/admEP/',
+  baseURL: (devMode ? 'http://127.0.0.1:3000/' : process.env.BASE_URL) + 'scv-v1/',
   timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 }
@@ -57,22 +57,17 @@ _axios.interceptors.response.use(
     if (devMode)
       console.log(response)
 
-    if (response)
-    {
-      if (response.status === 401)
-      {
+    if (response) {
+      if (response.status === 401) {
         const redirectUrl = router.currentRoute.value.path
-        if (error === 'Re-login!')
-        {
+        if (error === 'Re-login!') {
           $Auth.$form.logout()
           $Auth.$form.show({ showQuery: true, message: 'Please, Re-login to continue!', redirect: redirectUrl })
-        } else
-        {
+        } else {
           router.replace({ path: '/401' })
         }
       }
-      if (response.status === 404)
-      {
+      if (response.status === 404) {
         router.push({ name: '404', /* query: { data: error } */ })
       }
     }

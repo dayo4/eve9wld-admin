@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, defineAsyncComponent } from "vue"
 import { $Auth, $Navs } from "@/store"
 
 import TopNav from "@/components/navs/TopNav.vue"
@@ -36,8 +36,8 @@ export default defineComponent({
         HoverPanel,
         Process,
         Notify,
-        Input: () => import("@/components/GlobalComponents/Input.vue"),
-        Auth: () => import("@/components/auth/Auth.vue"),
+        Input: defineAsyncComponent(() => import("@/components/GlobalComponents/Input.vue")),
+        Auth: defineAsyncComponent(() => import("@/components/auth/Auth.vue")),
     },
 
     // computed: {

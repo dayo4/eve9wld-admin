@@ -19,18 +19,17 @@ export class Form {
     }
 
     show (query?: { showQuery?: boolean, message?: string, redirect?: string }, mode: number = 1) {
-        if (query)
-        {
+        if (query) {
             this.query = query as any
         }
 
         this.status = true
         this.mode = mode
+        // console.log(this.status)
     }
     dismiss () {
         this.status = false
-        if (this.query.showQuery)
-        {
+        if (this.query.showQuery) {
             this.query = { showQuery: false, message: '', redirect: '' }
         }
 
@@ -39,19 +38,16 @@ export class Form {
     async register (payload: object) {
         const sr = this.response
 
-        try
-        {
+        try {
             const { data } = await $Axios.post("register", {
                 ...payload
             })
 
-            if (data)
-            {
+            if (data) {
                 sr.error = false
                 sr.message = data/* "Successfully created account" */
             }
-        } catch (e)
-        {
+        } catch (e) {
             sr.error = true
             sr.message = e
         }
@@ -59,8 +55,7 @@ export class Form {
 
     async login (payload: any, stage: number = 1) {
         const sr = this.response
-        try
-        {
+        try {
             const { data } = await $Axios.post("login", {
                 // const { data } = await $Axios.post("jwt-auth/v1/token", {
                 email: payload.email,
@@ -91,8 +86,7 @@ export class Form {
             //     return {}
             // }
 
-            if (data)
-            {
+            if (data) {
                 $LSAgent.setToken(data.token)
                 $LSAgent.setData(data.user, 'userDetails')
 
@@ -104,16 +98,13 @@ export class Form {
                 return {}
             }
         }
-        catch (e)
-        {
+        catch (e) {
             console.log(e)
             sr.message = ""
-            if (e)
-            {
+            if (e) {
                 sr.error = true
                 sr.message = e
-            } else
-            {
+            } else {
                 sr.error = true
                 sr.message =
                     "Connection error. Try again later!"
@@ -125,12 +116,10 @@ export class Form {
     logout (notify?: boolean) {
         $LSAgent.selfDestruct()
 
-        if ($Router.currentRoute.value.name !== 'home')
-        {
+        if ($Router.currentRoute.value.name !== 'home') {
             $Router.push({ path: '/' })
         }
-        if (notify)
-        {
+        if (notify) {
             $Notify.error("You have been logged out.")
         }
     }

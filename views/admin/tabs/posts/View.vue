@@ -42,7 +42,55 @@ export default Vue.extend({
 
   // },
   // mounted () {
+  // validate() {
+  //   const schema = [
+  //     {
+  //       fieldName: "Title",
+  //       data: $Validator.sanitize(this.title),
+  //       rules: {
+  //         required: true,
+  //         min: 10,
+  //         max: 100
+  //       }
+  //     },
+  //     {
+  //       fieldName: "Slug",
+  //       data: $Validator.sanitize(this.slug),
+  //       rules: {
+  //         required: true,
+  //         min: 5,
+  //         max: 100
+  //       }
+  //     },
+  //     {
+  //       fieldName: "Content",
+  //       data: this.content,
+  //       rules: {
+  //         required: true
+  //       }
+  //     }
+  //   ];
+  //   return $Validator.validate(schema);
+  // },
 
+  // init() {
+  //   if (this.validate()) {
+  //     $Obstacl.create("#saveBtn", {
+  //       action: this.saveContent
+  //       // action: this.captureContentImages,
+  //     });
+  //   }
+  //   this.errors = $Validator.getErrors();
+
+  //   $Process.abort();
+
+  //   if (this.errors["Content"]) {
+  //     $Notify.error(this.errors["Content"]);
+  //   }
+  //   if (this.errors["Slug"]) {
+  //     $Notify.error(this.errors["Slug"]);
+  //   }
+  // },
   // }
 });
 </script>

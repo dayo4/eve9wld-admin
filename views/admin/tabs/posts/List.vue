@@ -1,19 +1,19 @@
 <template>
   <article class="Tab xs12">
-    <h2 class="text-center t-blue-grey--1">All Products</h2>
+    <h2 class="text-center t-blue-grey--1">All Posts</h2>
 
     <section
       class="Quickview flex wrap a-i-center j-c-center xs12 sm9 md7 t-white"
     >
       <div class="xs11 sm6">
         <div class="text-center br2 m-6">
-          <h3 class="bg-green p-4">Add New Product</h3>
+          <h3 class="bg-green p-4">Add New Post</h3>
           <p class="icon-check t-green m-4"></p>
         </div>
       </div>
       <div class="xs11 sm6">
         <div class="text-center br2 m-6">
-          <h3 class="bg-light-blue p-4">All Products</h3>
+          <h3 class="bg-light-blue p-4">All Posts</h3>
           <p class="t-light-blue m-4">354</p>
         </div>
       </div>
@@ -34,7 +34,7 @@
           <input
             class="Search"
             type="search"
-            name="searchProducts"
+            name="searchPosts"
             placeholder="search"
           />
           <button
@@ -65,6 +65,11 @@
             <option value="pending">Pending</option>
             <option value="archived">Archived</option>
           </select>
+          <select @change="setFilter" name="type" class="mr-1">
+            <option selected>All Types</option>
+            <option value="post">Post</option>
+            <option value="page">Page</option>
+          </select>
           <select v-model="query.sort" name="filter" class="mr-1">
             <option :value="['created_at', 'desc']">
               Newest First
@@ -87,21 +92,21 @@
         <thead>
           <tr>
             <td><input type="checkbox" /></td>
-            <th scope="col" width="40%">Product Name</th>
-            <th scope="col">Price</th>
+            <th scope="col" width="40%">Post Name</th>
+            <th scope="col">Post Type</th>
             <th scope="col">Category</th>
             <th scope="col">Date</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(product, i) in products" :key="i">
-            <th><input type="checkbox" @change="checkBox(product.id)" /></th>
+          <tr v-for="(post, i) in posts" :key="i">
+            <th><input type="checkbox" @change="checkBox(post.id)" /></th>
             <td>
-              {{ product.name }}
+              {{ post.name }}
             </td>
-            <td>{{ product.sale_price }}</td>
-            <td>{{ product.categories }}</td>
-            <td>{{ product.updated_at }}</td>
+            <td>{{ post.type }}</td>
+            <td>{{ post.categories }}</td>
+            <td>{{ post.updated_at }}</td>
           </tr>
         </tbody>
         <tfoot>
@@ -118,13 +123,13 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { $Products } from "@/store";
+import { $Posts } from "@/store";
 // import { $Confirm } from "@/plugins";
 
 export default Vue.extend({
   data() {
     return {
-      checkedProducts: [],
+      checkedPosts: [],
       bulkAction: "-1",
       query: {
         limit: 20,
@@ -136,48 +141,46 @@ export default Vue.extend({
   },
 
   computed: {
-    products: () => $Products.data,
-    count: () => $Products.count
+    products: () => $Posts.data,
+    count: () => $Posts.count
   },
 
   methods: {
     checkBox(product_id) {
       // let tg = e.target;
       // let product_id = tg.getAttribute("data-checked");
-      let index = this.checkedProducts.indexOf(product_id);
+      let index = this.checkedPosts.indexOf(product_id);
       // tg.classList.toggle("icon-check-1");
-      if (index != -1) this.checkedProducts.splice(index, 1);
-      else this.checkedProducts.push(product_id);
-      console.log(this.checkedProducts);
+      if (index != -1) this.checkedPosts.splice(index, 1);
+      else this.checkedPosts.push(product_id);
     },
-
     applyBulkAction() {
       switch (this.bulkAction) {
         case "delete":
-          $Products.$settings.delete(this.checkedProducts);
+          $Posts.$settings.delete(this.checkedPosts);
           break;
         case "publish" || "draft" || "archive":
-          $Products.$settings.update({
-            productsIds: this.checkedProducts,
+          $Posts.$settings.update({
+            postsIds: this.checkedPosts,
             data: { status: this.bulkAction }
           });
           break;
       }
+    },
+    applyFilters() {
+      $Posts.fetchAll(this.query);
     },
 
     setFilters(event) {
       const tg = event.target;
       if (tg.value) this.query.filter[tg.name] = tg.value;
       else delete this.query.filter[tg.name];
-    },
-
-    applyFilters() {
-      $Products.fetchAll(this.query);
+      console.log(this.query.filter);
     }
   },
 
   mounted() {
-    $Products.fetchAll(this.query);
+    $Posts.fetchAll(this.query);
   }
 });
 </script>

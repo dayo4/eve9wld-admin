@@ -127,8 +127,8 @@
             <section class="DtCtrlBox">
               <div class="Divi">
                 <section class="">
-                  <select v-model="query.limit" name="perPage" class="mr-2">
-                    <option :value="20">20</option>
+                  <select v-model="query.limit" class="mr-2">
+                    <option selected :value="20">20</option>
                     <option :value="50">50</option>
                     <option :value="100">100</option>
                     <option :value="'all'">All</option>
@@ -150,11 +150,14 @@
 
               <div class="Divi">
                 <section class="flex">
-                  <select name="action" class="mr-2">
+                  <select v-model="bulkAction" class="mr-2">
                     <option value="-1">Bulk Actions</option>
                     <option value="delete">delete</option>
                   </select>
-                  <button @click="bulkAction" class="btn bg-cyan--4 shadow-0">
+                  <button
+                    @click="applyBulkAction"
+                    class="btn bg-cyan--4 shadow-0"
+                  >
                     Apply
                   </button>
                 </section>
@@ -174,7 +177,7 @@
                       Oldest First
                     </option>
                   </select>
-                  <button class="btn bg-cyan--4 shadow-0">
+                  <button @click="applyFilters" class="btn bg-cyan--4 shadow-0">
                     Filter
                   </button>
                 </section>
@@ -228,7 +231,7 @@
                 >
                   <div class="Img">
                     <img @click="selectImage(image)" :src="image.url" />
-                    <i @click="checkBox" :data-checked="image.id"></i>
+                    <i @click="checkBox" :data-checked="image.url"></i>
                   </div>
                 </div>
               </section>
@@ -345,8 +348,9 @@ export default Vue.extend({
       uploadMode: false,
       checkedImages: [],
       selectedImage: {},
+      bulkAction: "-1",
       query: {
-        limit: 10,
+        limit: 20,
         offset: 0,
         sort: ["created_at", "desc"],
         filter: {}
@@ -391,7 +395,9 @@ export default Vue.extend({
       $MediaLibrary.formData = formData;
     },
     uploadImage() {
-      $MediaLibrary.uploadImage();
+      $MediaLibrary.uploadImage().then(data => {
+        if (data) this.fetchImages();
+      });
     },
 
     triggerImageEditor() {
@@ -402,7 +408,14 @@ export default Vue.extend({
       $MediaLibrary.fetchImages(this.query);
     },
 
-    bulkAction() {}
+    applyBulkAction() {
+      if (this.bulkAction === "delete") {
+        $MediaLibrary.deleteImage(this.checkedImages);
+      }
+    },
+    applyFilters() {
+      this.fetchImages();
+    }
   },
   mounted() {
     this.fetchImages();

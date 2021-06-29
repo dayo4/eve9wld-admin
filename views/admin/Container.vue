@@ -10,12 +10,7 @@
     </article>
 
     <!-- Side Nav Component -->
-    <section id="ADMMORPH" class="bg-img-masked">
-      <a href="#">
-        <span class="icon-check"></span>
-        <span class="">Custom Tabs</span>
-      </a>
-    </section>
+    <section id="ADMMORPH" class="bg-img-masked"></section>
   </div>
 </template>
 
@@ -80,6 +75,12 @@ export default Vue.extend({
             icon: "icon-cog-1",
             name: "Products",
             routeName: "products"
+          },
+          {
+            id: 21,
+            icon: "icon-cog-1",
+            name: "Posts",
+            routeName: "posts"
           },
           {
             id: 4,

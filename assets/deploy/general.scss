@@ -19,7 +19,7 @@ div[contenteditable="true"].shorter {
 
 div[contenteditable="true"],
 input {
-  /* border: solid 2px rgba(128, 128, 128, 0.591); */
+  border: solid 2px $blue-grey-2;
   border-radius: 4px;
   padding: 7px;
 }

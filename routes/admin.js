@@ -19,6 +19,31 @@ const routes = [
           import("@/views/admin/tabs/users/Index.vue").then(m => m.default || m)
       },
       {
+        path: "posts",
+        component: () =>
+          import("@/views/admin/tabs/posts/Index.vue").then(
+            m => m.default || m
+          ),
+        children: [
+          {
+            path: "",
+            name: "posts",
+            component: () =>
+              import("@/views/admin/tabs/posts/List.vue").then(
+                m => m.default || m
+              )
+          },
+          {
+            path: "edit",
+            name: "edit-post",
+            component: () =>
+              import("@/views/admin/tabs/posts/Edit.vue").then(
+                m => m.default || m
+              )
+          }
+        ]
+      },
+      {
         path: "products",
         // name: "products",
         component: () =>

@@ -128,18 +128,20 @@
 
 <template>
   <div>
-    <h2 class="text-center t-blue-grey--1">Add New Product</h2>
+    <h2 class="text-center t-blue-grey--1">
+      {{ currentMode == "new" ? "Add New Post" : "Edit Post" }}
+    </h2>
 
     <article class="flex wrap pl-5 pr-4">
       <section class="MainBoxCont xs12 md8">
         <div class="TextFeilds my-2 t-blue-grey">
           <div>
-            <label>Name</label>
+            <label>Title</label>
             <input
               class="xs12"
               type="text"
               placeholder="Enter Product Name"
-              v-model="name"
+              v-model="title"
               @input="setSlug"
             />
           </div>
@@ -156,11 +158,11 @@
         </div>
 
         <div class="my-2">
-          <h3 class="t-blue-grey mt-5 mb-1">Product Description</h3>
+          <h3 class="t-blue-grey mt-5 mb-1">Post Content</h3>
           <div>
             <Composer
-              @contentUpdated="setDescription"
-              :initialContent="productToEdit ? productToEdit.description : null"
+              @contentUpdated="setContent"
+              :initialContent="postToEdit ? postToEdit.description : null"
               ref="composer"
             >
             </Composer>
@@ -168,21 +170,19 @@
         </div>
 
         <div class="my-2">
-          <h3 class="mt-5 mb-1">Short Description</h3>
+          <h3 class="mt-5 mb-1">Excerpt</h3>
           <div>
             <div
-              ref="shortDesc"
+              ref="excerpt"
               class="b4"
               contenteditable="true"
               placeholder="Product short description"
-              @input="setShortDescription"
-            >
-              <!-- {{ short_description }} -->
-            </div>
+              @input="setExcerpt"
+            ></div>
           </div>
         </div>
 
-        <div class="Categ my-4 p-4 t-blue-grey b1 br3">
+        <div class="Categ my-4 p-4 b1 br3">
           <h3 class="mb-3 mt-0">Categories</h3>
           <div v-for="i in 5">
             <input class="mr-2" type="checkbox" name="cat1" value="cat1" />
@@ -204,26 +204,11 @@
           </div>
         </div>
 
-        <div class="TextFeilds my-2 t-blue-grey">
-          <div>
-            <label>Regular Price</label>
-            <input
-              class="xs12"
-              type="text"
-              placeholder="Enter Product Regular Price"
-              v-model="price"
-            />
-          </div>
-          <div>
-            <label>Sale Price</label>
-            <input
-              class="xs12"
-              type="text"
-              placeholder="Product Price"
-              v-model="sale_price"
-            />
-          </div>
-        </div>
+        <select @change="setPostType" class="my-3 mr-1">
+          <option selected>Select Post Type</option>
+          <option value="post">Post</option>
+          <option value="page">Page</option>
+        </select>
 
         <div class="t-blue-grey"></div>
       </section>
@@ -235,7 +220,7 @@
           <section>
             <h3 class="my-1">Featured Image</h3>
             <small class="mb-4">
-              This will be the main product image.
+              This will be the main post image.
             </small>
             <button @click="openMedLib('featured')" class="btn m-2 p-2">
               <i class="icon-picture mr-2"></i>
@@ -254,7 +239,7 @@
           </section>
           <hr />
           <section>
-            <h3 class="my-1">Product Gallery</h3>
+            <h3 class="my-1">Post Gallery</h3>
             <small class="mb-4">
               This will be shown on sliders
             </small>
@@ -310,7 +295,7 @@
 <script lang="ts">
 import Vue from "vue";
 
-import { $Products } from "@/store";
+import { $Posts } from "@/store";
 import { $Notify, $Process } from "@/plugins";
 
 // import MediaLibrary from "@/components/uploads/MediaLibrary.vue"
@@ -325,50 +310,36 @@ export default Vue.extend({
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.query.mode === "edit") {
-        $Products.$edit.fetch({ slug: to.params.slug });
-        $Products.$edit.currentMode = "edit";
+        $Posts.$edit.fetch({ slug: to.params.slug });
+        $Posts.$edit.currentMode = "edit";
       }
     });
   },
   data() {
     return {
-      //component props
+      //component data
       showMedLib: false,
       MedLibTarget: "",
       featuredImage: "",
 
-      // product props
-      name: "",
+      // post data
+      title: "",
       slug: "",
-      description: "",
-      short_description: "",
+      content: "",
+      excerpt: "",
       categories: [],
       tags: [],
-      price: "",
-      sale_price: "",
-      images: []
+      images: [],
+      type: "post"
     };
   },
 
   computed: {
-    currentMode: () => $Products.$edit.currentMode,
-    productToEdit: () => $Products.$edit.productToEdit
+    currentMode: () => $Posts.$edit.currentMode,
+    postToEdit: () => $Posts.$edit.postToEdit
   },
 
   methods: {
-    preview(slug: string) {
-      // console.log(this.productToEdit)
-      if (!slug) {
-        $Notify.info("You have to Save content first before you can preview.");
-        return;
-      } else {
-        let route = this.$router.resolve({
-          path: "posts-preview/" + slug
-        });
-        window.open(route.href, "_blank");
-      }
-    },
-
     setSlug(e) {
       this.slug = e.target.value
         .replace(/\s{2,}/g, " ")
@@ -377,14 +348,17 @@ export default Vue.extend({
         .toLowerCase();
     },
 
-    setDescription(content: string) {
-      this.description = content;
+    setContent(content: string) {
+      this.content = content;
     },
 
-    setShortDescription(e) {
-      this.short_description = e.target.textContent;
+    setExcerpt(e) {
+      this.excerpt = e.target.textContent;
     },
-
+    setPostType(event) {
+      const tg = event.target;
+      if (tg.value) this.type = tg.value;
+    },
     /* for media library and image selecion */
     openMedLib(target: string) {
       this.MedLibTarget = target;
@@ -415,40 +389,39 @@ export default Vue.extend({
     },
     /* for media library and image selecion */
 
-    SaveProduct() {
+    SavePost() {
       const data = {
-        name: this.name,
+        title: this.title,
         slug: this.slug,
-        description: this.description,
-        short_description: this.short_description,
+        content: this.content,
+        excerpt: this.excerpt,
+        type: this.type,
         categories: JSON.stringify(this.categories),
         tags: JSON.stringify(this.tags),
-        price: this.price,
-        sale_price: this.sale_price,
         images: JSON.stringify([this.featuredImage, ...this.images])
       };
       // console.log(data);
       if (this.currentMode === "new") {
-        $Products.$edit.create(data);
+        $Posts.$edit.create(data);
       } else {
-        $Products.$edit.update(data);
+        $Posts.$edit.update(data);
       }
     }
   },
   mounted() {
     $Process.add("Loading Editor...");
 
-    if (this.productToEdit) {
+    if (this.postToEdit) {
       this.$data.forEach(data => {
-        if (this.productToEdit[data]) {
-          data = this.productToEdit[data];
+        if (this.postToEdit[data]) {
+          data = this.postToEdit[data];
         }
       });
       if (this.images.length > 0) {
         this.featuredImage = this.images[0];
         this.images.shift();
       }
-      this.$refs.shortDesc.textContent = this.short_description;
+      this.$refs.excerpt.textContent = this.excerpt;
     }
   }
 });

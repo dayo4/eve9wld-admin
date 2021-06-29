@@ -257,7 +257,7 @@ export default Vue.extend({
               }
             );
             $this.newFile = file;
-            console.log(file);
+            // console.log(file);
 
             const formData = new FormData();
             formData.append($this.fieldName, file);

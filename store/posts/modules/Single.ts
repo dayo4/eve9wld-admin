@@ -1,20 +1,23 @@
 import { $Axios, $Process, $Notify } from '@/plugins'
 
 export class SinglePost {
-    post = null
+    data = null
+    comments = null
+    allCategories = null //fetch along all categories relating to products.
 
-    async fetch (payload: { slug: string }, preview = false) {
-        $Process.add()
-        try
-        {
-            const { data } = await $Axios.get("posts/" + payload.slug + '/' + (preview ? 'preview' : ''))
-            this.post = data
-            return true
+    async fetch (payload: { slug: string, id?: string }) {
+        $Process.add('Fetching content')
+        try {
+            const { data } = await $Axios.get("posts/" + payload.slug)
+            this.data = data.post
+            this.comments = data.comments
+            this.allCategories = data.categories
+            return data
         }
-        catch (e)
-        {
+        catch (e) {
             $Notify.error('Unable to get the requested page')
         }
         finally { $Process.hide() }
     }
+
 }

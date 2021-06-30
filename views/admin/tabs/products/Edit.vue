@@ -243,10 +243,10 @@
             </button>
             <div class="flex wrap md-j-c-center">
               <div class="featuredImg">
-                <img :src="featuredImage || '/defaults/pgs/ph.png'" />
+                <img :src="featured_image || '/defaults/pgs/ph.png'" />
                 <i
                   @click="removeFeaturedImage"
-                  v-if="featuredImage"
+                  v-if="featured_image"
                   class="icon-trash-empty"
                 ></i>
               </div>
@@ -276,7 +276,7 @@
             </div>
           </section>
         </div>
-        <!-- <ImageTransformer @ready="addProductImage" ref="imageTransformer" fieldName="featuredImage" :cropWidth="600" :cropHeight="350" /> -->
+        <!-- <ImageTransformer @ready="addProductImage" ref="imageTransformer" fieldName="featured_image" :cropWidth="600" :cropHeight="350" /> -->
         <!-- <img v-if="postImageSrc" ref="postImage" :src="
                              $postBaseUrl + postImageSrc[0]
                         " alt="post image" /> -->
@@ -335,7 +335,6 @@ export default Vue.extend({
       //component props
       showMedLib: false,
       MedLibTarget: "",
-      featuredImage: "",
 
       // product props
       name: "",
@@ -346,6 +345,7 @@ export default Vue.extend({
       tags: [],
       price: "",
       sale_price: "",
+      featured_image: "",
       images: []
     };
   },
@@ -356,18 +356,18 @@ export default Vue.extend({
   },
 
   methods: {
-    preview(slug: string) {
-      // console.log(this.productToEdit)
-      if (!slug) {
-        $Notify.info("You have to Save content first before you can preview.");
-        return;
-      } else {
-        let route = this.$router.resolve({
-          path: "posts-preview/" + slug
-        });
-        window.open(route.href, "_blank");
-      }
-    },
+    // preview (slug: string) {
+    // 	// console.log(this.productToEdit)
+    // 	if (!slug) {
+    // 		$Notify.info("You have to Save content first before you can preview.")
+    // 		return
+    // 	} else {
+    // 		let route = this.$router.resolve({
+    // 			path: "posts-preview/" + slug
+    // 		})
+    // 		window.open(route.href, "_blank")
+    // 	}
+    // },
 
     setSlug(e) {
       this.slug = e.target.value
@@ -398,7 +398,7 @@ export default Vue.extend({
       this.showMedLib = false;
 
       if (target === "featured") {
-        this.featuredImage = url;
+        this.featured_image = url;
       } else {
         this.images.push(url);
       }
@@ -411,7 +411,7 @@ export default Vue.extend({
       if (index != -1) this.images.splice(index, 1);
     },
     removeFeaturedImage() {
-      this.featuredImage = "";
+      this.featured_image = "";
     },
     /* for media library and image selecion */
 
@@ -425,7 +425,8 @@ export default Vue.extend({
         tags: JSON.stringify(this.tags),
         price: this.price,
         sale_price: this.sale_price,
-        images: JSON.stringify([this.featuredImage, ...this.images])
+        featured_image: this.featured_image,
+        images: JSON.stringify(this.images)
       };
       // console.log(data);
       if (this.currentMode === "new") {
@@ -444,10 +445,6 @@ export default Vue.extend({
           data = this.productToEdit[data];
         }
       });
-      if (this.images.length > 0) {
-        this.featuredImage = this.images[0];
-        this.images.shift();
-      }
       this.$refs.shortDesc.textContent = this.short_description;
     }
   }

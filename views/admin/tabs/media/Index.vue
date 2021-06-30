@@ -2,12 +2,10 @@
   <div>
     <section id="ProductsNav"></section>
 
-    <div class="SubTabs">
-      <!-- All tabs go here -->
-      <keep-alive>
-        <component :is="subActiveTab"></component>
-      </keep-alive>
-    </div>
+    <!-- All tabs go here -->
+    <keep-alive>
+      <component :is="subActiveTab"></component>
+    </keep-alive>
   </div>
 </template>
 <script lang="ts">

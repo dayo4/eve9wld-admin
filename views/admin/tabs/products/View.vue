@@ -11,7 +11,7 @@
         <div class="MainImg px-2 mb-8">
           <img
             :title="product.name"
-            :src="product.images[0].url"
+            :src="product.featured_image || product.images[0].url"
             draggable="false"
           />
         </div>

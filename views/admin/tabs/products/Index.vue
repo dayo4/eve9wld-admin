@@ -2,12 +2,10 @@
   <div>
     <section id="ProductsNav"></section>
 
-    <div class="SubTabs">
-      <!-- All tabs go here -->
-      <transition name="fade-in">
-        <router-view></router-view>
-      </transition>
-    </div>
+    <!-- All tabs go here -->
+    <transition name="fade-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 <script lang="ts">

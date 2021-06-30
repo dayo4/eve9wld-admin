@@ -228,10 +228,10 @@
             </button>
             <div class="flex wrap md-j-c-center">
               <div class="featuredImg">
-                <img :src="featuredImage || '/defaults/pgs/ph.png'" />
+                <img :src="featured_image || '/defaults/pgs/ph.png'" />
                 <i
                   @click="removeFeaturedImage"
-                  v-if="featuredImage"
+                  v-if="featured_image"
                   class="icon-trash-empty"
                 ></i>
               </div>
@@ -261,7 +261,7 @@
             </div>
           </section>
         </div>
-        <!-- <ImageTransformer @ready="addProductImage" ref="imageTransformer" fieldName="featuredImage" :cropWidth="600" :cropHeight="350" /> -->
+        <!-- <ImageTransformer @ready="addProductImage" ref="imageTransformer" fieldName="featured_image" :cropWidth="600" :cropHeight="350" /> -->
         <!-- <img v-if="postImageSrc" ref="postImage" :src="
                              $postBaseUrl + postImageSrc[0]
                         " alt="post image" /> -->
@@ -320,7 +320,6 @@ export default Vue.extend({
       //component data
       showMedLib: false,
       MedLibTarget: "",
-      featuredImage: "",
 
       // post data
       title: "",
@@ -329,6 +328,7 @@ export default Vue.extend({
       excerpt: "",
       categories: [],
       tags: [],
+      featured_image: "",
       images: [],
       type: "post"
     };
@@ -372,7 +372,7 @@ export default Vue.extend({
       this.showMedLib = false;
 
       if (target === "featured") {
-        this.featuredImage = url;
+        this.featured_image = url;
       } else {
         this.images.push(url);
       }
@@ -385,7 +385,7 @@ export default Vue.extend({
       if (index != -1) this.images.splice(index, 1);
     },
     removeFeaturedImage() {
-      this.featuredImage = "";
+      this.featured_image = "";
     },
     /* for media library and image selecion */
 
@@ -398,7 +398,8 @@ export default Vue.extend({
         type: this.type,
         categories: JSON.stringify(this.categories),
         tags: JSON.stringify(this.tags),
-        images: JSON.stringify([this.featuredImage, ...this.images])
+        featured_image: this.featured_image,
+        images: JSON.stringify(this.images)
       };
       // console.log(data);
       if (this.currentMode === "new") {
@@ -417,10 +418,6 @@ export default Vue.extend({
           data = this.postToEdit[data];
         }
       });
-      if (this.images.length > 0) {
-        this.featuredImage = this.images[0];
-        this.images.shift();
-      }
       this.$refs.excerpt.textContent = this.excerpt;
     }
   }

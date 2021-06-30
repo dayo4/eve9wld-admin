@@ -18,6 +18,7 @@ const routes = [
         component: () =>
           import("@/views/admin/tabs/users/Index.vue").then(m => m.default || m)
       },
+      /* POSTS ROUTES */
       {
         path: "posts",
         component: () =>
@@ -43,6 +44,7 @@ const routes = [
           }
         ]
       },
+      /* PRODUCTS ROUTES */
       {
         path: "products",
         // name: "products",

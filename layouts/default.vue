@@ -57,6 +57,7 @@ export default Vue.extend({
   position: relative;
   margin-top: 52px;
   padding-bottom: 165px; /* Bottom-nav height + Footer height + 0px*/
+  min-height: 100vh;
   height: 100%;
   width: 100%;
 }

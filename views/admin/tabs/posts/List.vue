@@ -65,7 +65,7 @@
             <option value="pending">Pending</option>
             <option value="archived">Archived</option>
           </select>
-          <select @change="setFilter" name="type" class="mr-1">
+          <select @change="setFilters" name="type" class="mr-1">
             <option selected>All Types</option>
             <option value="post">Post</option>
             <option value="page">Page</option>

@@ -3,6 +3,14 @@
   <div>
     <section id="toolbar-container"></section>
     <section id="decoupled-ck-editor"></section>
+
+    <!-- MediaLibrary Component -->
+    <!-- <MediaLibrary
+      v-if="showMedLib"
+      @closed="showMedLib = false"
+      :show="showMedLib"
+    ></MediaLibrary> -->
+    <!-- MediaLibrary Component -->
   </div>
 </template>
 <script lang="ts">
@@ -18,8 +26,10 @@ import { $Axios } from "@/plugins";
 import { $Auth } from "@/store";
 
 export default Vue.extend({
-  // components: {
-  // },
+  components: {
+    ImageTransformer: () => import("@/components/uploads/ImageTransformer.vue"),
+    MediaLibrary: () => import("@/components/uploads/MediaLibrary.vue")
+  },
   props: {
     initialContent: { required: false, type: String },
     config: { required: false, type: Array }
@@ -28,13 +38,9 @@ export default Vue.extend({
   data() {
     return {
       editor: null,
-      editorConfig: {
-        plugins: [
-          ,/* resizeImage */
-        /* ImageInsert */
-        /* AutoImage */
-        ]
-      }
+
+      // media library
+      showMedLib: false
     };
   },
   // watch: {
@@ -58,35 +64,37 @@ export default Vue.extend({
         this.loader = loader;
       }
 
-      upload() {
-        return this.loader.file.then(async file => {
-          console.log(this.loader);
-          const formData = new FormData();
-          formData.append("contentImages", file);
+      // upload() {
+      //   return this.loader.file.then(async file => {
+      //     console.log(this.loader);
+      //     const formData = new FormData();
+      //     formData.append("contentImages", file);
 
-          try {
-            const { data } = await $Axios.patch(
-              "posts/uploadImages/" + 4 + "/" + $Auth.user.id,
-              formData,
-              {
-                onUploadProgress: progressEvent => {
-                  // setInterval(() => {
-                  //     let uploaded = Math.round((progressEvent.loaded / progressEvent.total) * 100)
-                  console.log(`${progressEvent.loaded}/${progressEvent.total}`);
-                  // }, 20)
-                }
-              }
-            );
-            console.log(data);
-            return { default: _this.$postBaseUrl + data.imageUrl };
-          } catch (e) {
-            console.log("errr", e);
-          }
-        });
-      }
-      abort() {
-        console.log("abooooooort");
-      }
+      //     try {
+      //       const { data } = await $Axios.patch(
+      //         "posts/uploadImages/" + 4 + "/" + $Auth.user.id,
+      //         formData,
+      //         {
+      //           onUploadProgress: progressEvent => {
+      //             // setInterval(() => {
+      //             //     let uploaded = Math.round((progressEvent.loaded / progressEvent.total) * 100)
+      //             console.log(`${progressEvent.loaded}/${progressEvent.total}`);
+      //             // }, 20)
+      //           }
+      //         }
+      //       );
+      //       console.log(data);
+      //       return { default: _this.$postBaseUrl + data.imageUrl };
+      //     } catch (e) {
+      //       console.log("errr", e);
+      //     }
+
+      //     _this.$refs.imageTransformer;
+      //   });
+      // }
+      // abort() {
+      //   console.log("abooooooort");
+      // }
     }
 
     if (!CkDocumentEditor) {
@@ -134,39 +142,6 @@ export default Vue.extend({
           },
           language: "en",
           image: {
-            // resizeOptions: [
-            //     {
-            //         name: "resizeImage:original",
-            //         label: "Original",
-            //         value: null,
-            //     },
-            //     {
-            //         name: "resizeImage:100%",
-            //         label: "100%",
-            //         value: 100,
-            //     },
-            //     {
-            //         name: "resizeImage:90%",
-            //         label: "90%",
-            //         value: 90,
-            //     },
-            //     {
-            //         name: "resizeImage:75",
-            //         label: "75%",
-            //         value: 75,
-            //     },
-            //     {
-            //         name: "resizeImage:50",
-            //         label: "50%",
-            //         value: 50,
-            //     },
-            //     {
-            //         name: "resizeImage:25%",
-            //         label: "25%",
-            //         value: 25,
-            //     },
-            // ],
-
             toolbar: [
               "imageTextAlternative",
               "imageStyle:full",
@@ -195,7 +170,6 @@ export default Vue.extend({
           editor.model.document.on("change:data", () => {
             _this.$emit("contentUpdated", editor.getData());
           });
-
           if (_this.initialContent) {
             editor.setData(_this.initialContent);
             _this.$emit("contentUpdated", editor.getData());
@@ -211,6 +185,18 @@ export default Vue.extend({
           };
 
           $Process.hide();
+          // let addImageBtn = document.querySelector(
+          //   "input[type=file]"
+          //   // "#decoupled-ck-editor .ck-file-dialog-button"
+          // );
+          // addImageBtn.parentNode.removeChild(addImageBtn);
+          // console.log(addImageBtn);
+          // addImageBtn.addEventListener("click", function(e: Event) {
+
+          //   e.preventDefault();
+          //   e.stopPropagation();
+          //   e.stopImmediatePropagation();
+          // });
         })
         .catch(e => {
           $Process.hide();
@@ -225,5 +211,16 @@ export default Vue.extend({
   min-height: 300px;
   border: solid 2px $grey-2;
   border-radius: 5px;
+
+  // & .ck-file-dialog-button {
+  //   position: relative;
+  //   &::after {
+  //     position: absolute;
+  //     top: 0;
+  //     bottom: 0;
+  //     left: 0;
+  //     right: 0;
+  //   }
+  // }
 }
 </style>

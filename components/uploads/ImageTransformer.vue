@@ -178,21 +178,24 @@ export default Vue.extend({
       (this.$refs.CropperContainer as HTMLDivElement).innerHTML = "";
     },
 
-    trigger() {
-      // this trigger event will originate from the parent component
+    // this trigger event will originate from the parent component
+    trigger(file: File) {
+      /* 'file' param determines weather the file to be edited is passed along with the trigger or not. 
+      If not, the user is prompted to select a file from device */
+      // if (file) this.selectImage(file);
       (this.$refs.image_input as HTMLInputElement).click();
     },
 
     selectImage() {
       const file = (this.$refs["image_input"] as HTMLInputElement).files[0];
-
+      console.log(file);
       if (!file) {
         $Notify.error("no file selected");
       } else if (
         !["image/jpeg", "image/jpg", "image/png"].includes(file.type)
       ) {
         $Notify.error("only jpeg, jpg, png files are allowed");
-      } else if (file.size > 1000000) {
+      } else if (file.size > 5000000) {
         $Notify.error("highest size allowed is 1mb");
       } else {
         this.show = true;

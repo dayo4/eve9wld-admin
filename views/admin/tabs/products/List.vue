@@ -58,7 +58,7 @@
         </section>
 
         <section class="flex a-i-center">
-          <select @change="setFilter" name="status" class="mr-1">
+          <select @change="setFilters" name="status" class="mr-1">
             <option selected>All Items</option>
             <option value="draft">Draft</option>
             <option value="published">Published</option>

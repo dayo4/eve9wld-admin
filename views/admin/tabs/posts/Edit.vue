@@ -401,7 +401,7 @@ export default Vue.extend({
         featured_image: this.featured_image,
         images: JSON.stringify(this.images)
       };
-      // console.log(data);
+      console.log(data);
       if (this.currentMode === "new") {
         $Posts.$edit.create(data);
       } else {

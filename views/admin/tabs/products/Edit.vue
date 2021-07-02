@@ -428,7 +428,7 @@ export default Vue.extend({
         featured_image: this.featured_image,
         images: JSON.stringify(this.images)
       };
-      // console.log(data);
+      console.log(data.description);
       if (this.currentMode === "new") {
         $Products.$edit.create(data);
       } else {

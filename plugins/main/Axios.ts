@@ -3,7 +3,7 @@
 // import Vue from 'vue'
 import { AxiosInstance, AxiosPromise, Method, ResponseType, AxiosRequestConfig, AxiosResponse } from 'axios'
 import axios from 'axios'
-import { setupCache } from 'axios-cache-adapter'
+// import { setupCache } from 'axios-cache-adapter'
 import { $Router } from './'
 
 // import { createRouter } from '@/router'
@@ -25,19 +25,19 @@ import LSAgent from '@/plugins/storage/LSAgent'
 
 const router = $Router
 const devMode = process.env.NODE_ENV === 'development'
-console.log('called')
+
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || 'http://127.0.0.1:3000/'
 // axios.defaults.headers.common['Authorization'] = store.getters["auth/authToken"]
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-const cache = setupCache({
-  maxAge: 15 * 60 * 1000,
-  readOnError: (error, request) => {
-    return error.response.status >= 400 && error.response.status < 600
-  },
-  // Deactivate `clearOnStale` option so that we can actually read stale cache data
-  clearOnStale: false
-})
+// const cache = setupCache({
+//   maxAge: 15 * 60 * 1000,
+//   readOnError: (error, request) => {
+//     return error.response.status >= 400 && error.response.status < 600
+//   },
+//   // Deactivate `clearOnStale` option so that we can actually read stale cache data
+//   clearOnStale: false
+// })
 const config = {
   // baseURL: 'http://127.0.0.1:3000/scv-v1/',
   // baseURL: 'https://orb.heroestoggery.com/wp-json/',
@@ -45,7 +45,7 @@ const config = {
   baseURL: (devMode ? 'http://127.0.0.1:3000/' : process.env.BASE_URL) + 'scv-v1/admEP',
   timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
-  adapter: cache.adapter,
+  // adapter: cache.adapter,
 }
 
 const _axios = axios.create(config)

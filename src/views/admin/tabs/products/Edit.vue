@@ -184,7 +184,7 @@
 
         <div class="Categ my-4 p-4 t-blue-grey b1 br3">
           <h3 class="mb-3 mt-0">Categories</h3>
-          <div v-for="i in 5">
+          <div v-for="i in 5" :key="i">
             <input class="mr-2" type="checkbox" name="cat1" value="cat1" />
             <label>Category {{ i }}</label>
           </div>
@@ -198,7 +198,7 @@
           </div>
           <small>Separate tags with commas</small>
           <div class="Slot">
-            <span v-for="i in 10"
+            <span v-for="i in 10" :key="i"
               >tagone <span class="icon-cancel"></span
             ></span>
           </div>
@@ -296,8 +296,8 @@
     </article>
 
     <!-- MediaLibrary Component -->
+      <!-- v-if="showMedLib" -->
     <MediaLibrary
-      v-if="showMedLib"
       @closed="showMedLib = false"
       @selected="setImage"
       :show="showMedLib"

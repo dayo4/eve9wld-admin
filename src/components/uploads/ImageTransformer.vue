@@ -154,6 +154,18 @@ export default Vue.extend({
     cropHeight: {
       required: false,
       type: Number
+    },
+    maxWidth: {
+      required: false,
+      type: Number
+    },
+    maxHeight: {
+      required: false,
+      type: Number
+    },
+    aspectRatio: {
+      required: false,
+      type: Number
     }
     // show: {
     //     required: true,
@@ -220,7 +232,7 @@ export default Vue.extend({
       let $this = this;
 
       const cropper = new Cropper(image, {
-        aspectRatio: $this.cropWidth / $this.cropHeight || 1 / 1,
+        aspectRatio: $this.aspectRatio || $this.cropWidth / $this.cropHeight || 1 / 1,
         /* alt: 16/9 */
         autoCropArea: 1,
         // background: false,
@@ -230,12 +242,12 @@ export default Vue.extend({
         dragMode: "none",
         crop(event) {
           const canvas = cropper.getCroppedCanvas({
-            maxWidth: $this.cropWidth,
-            maxHeight: $this.cropHeight,
+            // maxWidth: $this.cropWidth,
+            // maxHeight: $this.cropHeight,
             // 	minWidth: 256,
             // 	minHeight: 256,
-            // maxWidth: 1400,
-            // maxHeight: 400,
+            maxWidth: $this.maxWidth || 1500,
+            maxHeight: $this.maxHeight || 1500,
             fillColor: "#fff"
             // imageSmoothingEnabled: false,
             // imageSmoothingQuality: 'high',

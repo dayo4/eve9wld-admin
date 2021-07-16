@@ -70,7 +70,7 @@
       @click="collapsed = !collapsed"
       class="Handle pink-gradient-btn t-white font-6 shadow-3 flex a-i-center j-c-end br5"
     >
-      <span class="icon-right-big" :class="collapsed ? '' : 'close'"></span>
+      <span class="icon-right" :class="collapsed ? '' : 'close'"></span>
     </span>
   </div>
   <!-- </div> -->
@@ -93,7 +93,7 @@ export default Vue.extend({
           store: "",
           auth: "user"
         },
-        { font: "icon-cog-alt", text: "Dashboard", link: "dashboard", auth: "" }
+        { font: "icon-cog", text: "Dashboard", link: "dashboard", auth: "" }
         // { font: 'icon-plus-1', text: 'New Post', link: 'compose-post', auth: 'admin' },
         // { font: 'icon-cog-1', text: 'Settings', link: 'manage-settings', auth: 'user' },
       ],
@@ -191,7 +191,7 @@ export default Vue.extend({
   & .Handle {
     cursor: pointer;
     position: absolute;
-    right: -25px;
+    right: -22px;
     top: 70%;
     width: 60px;
     height: 60px;
@@ -199,10 +199,12 @@ export default Vue.extend({
     border-left: 5px solid $pink-3;
     transition: all 0.4s;
     &:hover {
-      right: -30px;
+      right: -25px;
     }
     & > span {
-      transition: transform 0.5s;
+         position: absolute;
+    right: -6px;
+      transition: transform 0.3s;
       &.close {
         transform: rotateZ(180deg);
       }
